@@ -1,0 +1,38 @@
+<%- include header %>
+<div class="text-center page-title"><%= title %></div>
+<div class="container">
+	<div class="row">
+		<table class="table">
+			<tbody>
+			<tr>
+				<span style="font-weight: bold">标题：</span>
+				<textarea>
+					<%= art.title %>
+				</textarea>
+			</tr>
+			<tr>
+				<span style="font-weight: bold">标签：</span>
+				<textarea>
+					<%= art.tag %>
+				</textarea>
+			</tr>
+			<tr>
+				<span style="font-weight: bold">内容：</span>
+				<textarea>
+					<%= art.content %>
+				</textarea>
+			</tr>
+			<tr>
+				<td class="text-center">
+					<a href="/save_edit/<%= art._id %>" class="btn btn-info btn-sm">
+						<span class="glyphicon glyphicon-floppy-save"></span> 保存
+					</a>
+				</td>
+			</tr>
+
+			</tbody>
+		</table>
+
+	</div>
+</div>
+<%- include footer %>

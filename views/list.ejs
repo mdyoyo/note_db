@@ -1,0 +1,71 @@
+<%- include header %>
+<div class="container">
+	<div class="row">
+		<table class="table table-striped">
+			<caption>我的笔记列表</caption>
+			<thead>
+			<tr class="success">
+				<th>标题</th>
+				<th>标签</th>
+				<th>日期</th>
+				<th>管理</th>
+			</tr>
+			</thead>
+			<tbody>
+			<% if(notes.length==0){%>
+				<tr>
+					<td colspan="4" align="center">还没有记录哦，快去发表吧！</td>
+				</tr>
+			<%}%>
+			<% notes.forEach(function(note){ %>
+			<tr>
+				<td>
+					<a href="/my_detail/<%= note._id %>"><%= note.title%></a>
+				</td>
+				<td><%= note.tag   %></td>
+				<td>
+					<%= moment(note.createTime).locale('zh-cn').format('lll') %>
+				</td>
+				<td>
+					<a href="/post_update/<%= note._id %>" class="btn btn-info btn-sm">
+						<span class="glyphicon glyphicon-pencil"></span> 编辑
+					</a>
+					<a href="/delete/<%= note._id %>" class="btn btn-success btn-sm">
+						<span class="glyphicon glyphicon glyphicon-minus"></span> 删除
+					</a>
+				</td>
+			</tr>
+			<% }); %>
+
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<ul id="page1" pageCount="<%=page.pageCount%>" pageNum="<%=page.num %>"
+			 pageSize="<%=page.size%>" pageLimit="<%=page.limit%>"
+			 numberOfPages="<%=page.numberOf%>">
+		</ul>
+	</div>
+	<!-- 代码片段 查询结果 -->
+	</ul>
+
+</div>
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap-paginator.js"></script>
+
+<script type="text/javascript">
+		//分页功能
+		var page=$('#page1');
+//		alert(page.attr('pageNum')+" "+page.attr('pageCount')+" "+page.attr('numberOfPages'));
+		var options = {
+			bootstrapMajorVersion:3,
+			currentPage:page.attr('pageNum'),
+			totalPages:page.attr('pageCount'),
+			numberOfPages:page.attr('numberOfPages'),
+			pageUrl: function(type, page, current){
+				return "/list?p="+page;
+			}
+		}
+		$('#page1').bootstrapPaginator(options);
+</script>
+<%- include footer %>

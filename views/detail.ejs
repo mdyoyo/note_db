@@ -1,0 +1,41 @@
+<%- include header %>
+<div class="text-center page-title"style="font-size: x-large;color: #dca7a7;margin-bottom: 20px"><%= title %></div>
+<div class="container">
+	<div class="row">
+		<table class="table">
+			<tbody>
+				<tr>
+					<h1 class="text-center" style="background-color: #b9def0;margin-top:0px;margin-bottom: 0px"><%= art.title %></h1>
+				</tr>
+				<tr>
+					<td class="text-center">
+						<span style="font-weight: bold">标签：</span>
+						<span class="label label-success"><%= art.tag %></span>
+					</td>
+				</tr>
+				<tr style="background-color: #b9def0">
+					<td class="text-center" >
+						<span style="font-weight: bold;">时间：</span>
+						<span class="create-time">
+							<%= moment(art.createTime).locale('zh-cn').format('lll') %>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="text-center">
+						<a href="/post_update/<%= art._id %>" class="btn btn-success btn-sm">
+							<span class="glyphicon glyphicon-pencil"></span> 编辑
+						</a>
+					</td>
+				</tr>
+				<tr style="background-color: #c4e3f3">
+					<td>
+						<%= art.content %>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</div>
+<%- include footer %>

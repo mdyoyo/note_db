@@ -1,0 +1,19 @@
+<% include header.ejs %>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span8">
+            <form>
+                <fieldset>
+                    <legend><%=label%></legend>
+                    <textarea name="editor" id="editor" class="span12" rows="10" cols="60"
+                            <%=(note?'"note='+note+'"':'')%> ></textarea>
+                </fieldset>
+                <br>
+                <button id="save" type="button" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+    </div>
+</div>
+<span id='msg'></span>
+
+<% include footer.ejs %>

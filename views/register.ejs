@@ -1,0 +1,132 @@
+<%- include header %>
+	<div class="text-center page-title">新用户注册</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-4 col-xs-offset-4">
+				<form method="post">
+					<div class="form-group">
+						<input type="text" class="form-control"
+							   name="username" id="USERNAME"
+							   placeholder="用户名"
+							   onkeyup="value=value.replace(/[^\w]/ig,'') "
+							   onblur="check(this)" onfocus="change_hint(this)">
+						<span class="help-block" id="username_hint">长度3-20个字符，字母、数字、下划线的组合</span>
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control"
+							   name="password" id="PASSWORD" placeholder="密码"
+							   onblur="check(this)" onfocus="change_hint(this)">
+						<span class="help-block" id="pwd_hint">长度不少于6个字符，必须同时包含数字、小写字母、大写字母</span>
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control"
+							   name="passwordRepeat" id="PASSWORDREPEAT" placeholder="确认密码"
+							   onblur="check(this)" onfocus="change_hint(this)">
+						<span class="help-block" id="pwd_repeat_hint">请确认与第一次输入的密码一致</span>
+					</div>
+					<button type="submit" class="btn btn-default center-block">注册</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript">
+		function change_hint(obj){
+			var name = obj.name;
+			var temp;
+			if(name == "username"){
+				temp = document.getElementById("username_hint");
+				temp.className = "help-block";
+				temp.innerHTML = "长度3-20个字符，字母、数字、下划线的组合";
+			}else if(name == "password"){
+				temp = document.getElementById("pwd_hint");
+				temp.className = "help-block";
+				temp.innerHTML = "长度不少于6个字符，必须同时包含数字、小写字母、大写字母";
+			}else if(name == "passwordRepeat"){
+				temp = document.getElementById("pwd_repeat_hint");
+				temp.className = "help-block";
+				temp.innerHTML = "请确认与第一次输入的密码一致";
+			}
+		}
+		function check(obj){
+			var id = obj.name;
+			var text = document.getElementById(id.toString().toUpperCase()).value;
+			//判断是否为空
+			if(text.replace(/\s/g,"")==""){
+				document.getElementById(id+"_hint").innerHTML="输入不能为空";
+			}else{
+				if(id == "username"){
+					checkUsername();
+				} else if(id == "password"){
+					checkPassword();
+				} else if( id == "passwordRepeat"){
+					checkPasswordRepeat();
+				}
+			}
+		}
+		//检查用户名输入
+		function checkUsername() {
+			//只简单的判断用户名的长度
+			var id = document.getElementById("USERNAME");
+			var username=id.value;
+			var temp = document.getElementById("username_hint");
+			if(username.length < 3 ) {
+				temp.className = "register_check_hint_error";
+				temp.innerHTML = "用户名必须多于3个字符！";
+//				alert("用户名必须多于3个字符！");
+			}else if(username.length > 20 ){
+				temp.className = "register_check_hint_error";
+				temp.innerHTML = "用户名不得多于20个字符！";
+//				alert("用户名不得多于20个字符！");
+			}
+			else{//继续判断是否重名
+				temp.className = "help-block";
+				temp.innerHTML = "长度3-20个字符，字母、数字、下划线的组合";
+				var data = {"username_r":username};
+				$.getJSON("checkUsername_register",data,
+						function(data) {
+							if(data.status) {
+								temp.className = "register_check_hint_error";
+								temp.innerHTML = ""+data.msg;
+							} else{
+								temp.className = "register_check_hint_ok";
+								temp.innerHTML = "恭喜，用户名可用";
+							}
+						});
+
+			}
+		}
+		function checkPassword()
+		{
+			var password = document.getElementById("PASSWORD").value;
+			var temp = document.getElementById("pwd_hint");
+			var r=/^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,20}$/;
+			if(r.test(password)){
+				temp.className = "register_check_hint_ok";
+				temp.innerHTML = "恭喜，输入正确";
+			}
+			else{
+				temp.className = "register_check_hint_error";
+				if(password.length < 6){
+					temp.innerHTML = "密码长度必须大于6个字符";
+				} else{
+					temp.innerHTML = "密码必须同时包含数字、小写字母、大写字母";
+				}
+			}
+		}
+		function checkPasswordRepeat()
+		{
+			var password = document.getElementById("PASSWORD").value;
+			var passwordRepeat = document.getElementById("PASSWORDREPEAT").value;
+			var temp = document.getElementById("pwd_repeat_hint");
+			if(password != passwordRepeat)
+			{
+				temp.className = "register_check_hint_error";
+				temp.innerHTML = "两次输入的密码不一致，请修改";
+			}else{
+				temp.className = "register_check_hint_ok";
+				temp.innerHTML = "恭喜，输入正确";
+			}
+		}
+	</script>
+<%- include footer %>

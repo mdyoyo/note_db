@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title><%= title%></title>
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/common.css">
+    </head>
+    <body>
+        <div class="clearfix page-nav">
+            <% if(user){ %>
+
+                <div class="pull-left nav-username">
+                    <label href="#" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-user"></span><%= user.username %>
+                    </label>
+                </div>
+                <div class="pull-left" style="margin-right:10px;">
+                    <a href="/post" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-plus"></span> 发表
+                    </a>
+                </div>
+                <div class="pull-left">
+                    <a href="/list" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-th-list"></span> 查看
+                    </a>
+                </div>
+                <div class="pull-right nav-quit">
+                    <a href="/quit" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-log-out"></span> 退出
+                    </a>
+                </div>
+            <% }else{ %>
+                <div class="pull-right nav-register">
+                    <a href="/myregister">注册</a>
+                  </div>
+                 <div class="pull-right nav-login">
+                    <a href="/mylogin">登录</a>
+                 </div>
+            <% } %>
+        </div>
