@@ -3,7 +3,6 @@ var Waterline = require('waterline');
 var mysqlAdapter = require('sails-mysql');
 var mongoAdapter = require('sails-mongo');
 
-
 //适配器
 var adapters = {
     mongo:mongoAdapter,
@@ -13,18 +12,19 @@ var adapters = {
 
 //连接
 var connections = {
-    mymongo:{
+    my_mongo:{
         adapter:'mongo',
         url:'mongodb://localhost:27017/notes'
     },
-    mymysql:{
+    my_mysql:{
         adapter:'mysql',
-        url:'mysql://mynode:123456@localhost/mynode'
+        url:'mysql://mynode:123456@localhost/mynote'
     }
 };
+//数据集合
 var User = Waterline.Collection.extend({
     identity:'User',
-    connection:'mymongo',
+    connection:'my_mongo',
     schema:true,
     attributes:{
         username:{
@@ -38,13 +38,6 @@ var User = Waterline.Collection.extend({
         email:{
             type:'string'
         },
-        birthday:{
-            type:'date',
-            after:new Date('1991-01-01'),
-            before:function(){
-                return new Date();
-            }
-        },
         createTime:{
             type:'date'
         },
@@ -57,10 +50,10 @@ var User = Waterline.Collection.extend({
         return cb();
     }
 });
-
+//数据集合
 var Note = Waterline.Collection.extend({
     identity:'Note',
-    connection:'mymongo',
+    connection:'my_mongo',
     schema:true,
     attributes:{
         title:{
@@ -91,7 +84,6 @@ var Note = Waterline.Collection.extend({
 });
 
 var orm = new Waterline();
-
 //加载数据集合
 orm.loadCollection(User);
 orm.loadCollection(Note);

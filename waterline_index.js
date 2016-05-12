@@ -108,26 +108,23 @@ var orm = new Waterline();
 orm.loadCollection(User);
 orm.loadCollection(Note);
 
+//加载配置
 var config = {
     adapters:adapters,
     connections:connections
-}
+};
+//初始化
 orm.initialize(config, function(err, models) {
     if (err) {
-        console.log('waterline initialize failed, err:', err);
+        console.log('waterline初始化失败, err:', err);
         return;
     }
-    console.log('waterline initialize success.');
-    //app.set('models', models.collections);
+    console.log('waterline成功初始化.');
     app.models = models.collections;
-     app.collections = models.connections;
+    app.collections = models.connections;
     app.listen(3000, function (req, res) {
         console.log('App is running at port 3000');
     });
-
-//app.use(function(req, res, next){
-//    req.models = app.get('models');
-//    next();
 });
 
 //创建express实例
@@ -272,37 +269,33 @@ app.get('/list',function(req,res)
     req.session.error='两次输入密码不一致！';
     return res.redirect('/');
   }
-  app.models.User.findOne({username:username},function(err,user){
-   if(err){
-    console.log(err);
-    return res.redirect('/');
-  }
-  if(user){
-    console.log('用户名已经存在');
-      req.session.error='用户已经存在';
-    return res.redirect('/');
-  }
-  var md5=crypto.createHash('md5');
-  md5password=md5.update(password).digest('hex');
-  var newUser=new User({
-    username:username,
-    password:md5password
-  });
-
-
-  app.models.User.create(newUser).exec(function (err, record) {
- 
-           console.log("添加")
-           if (err) {
-               cb('ERROR_DATABASE_EXCEPTION');//输出错误
-                return res.redirect('/');
-           } else {
- 
-               cb(null, record);//正确返回
-               return res.redirect('/');
-           }
-       });
-});
+      app.models.User.findOne({username:username},function(err,user){
+          if(err){
+              console.log(err);
+              return res.redirect('/myregister');
+          }
+          if(user){
+              console.log('用户名已经存在');
+              return res.send({msg:'用户名已存在'});
+          }
+          //对密码进行MD5加密
+          var md5 = crypto.createHash('md5'),
+              md5password = md5.update(password).digest('hex');
+          var newUser=new User({
+              username:username,
+              password:md5password
+          });
+          app.models.User.create(newUser,function (err, result) {
+              if (err) {
+                  console.log(err);
+                  return res.redirect('/myregister');
+              } else {
+                  console.log(result);
+                  console.log('注册成功！');
+                  return res.redirect('/mylogin');
+              }
+          });
+      });
 
 });
 
